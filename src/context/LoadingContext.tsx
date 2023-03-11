@@ -8,38 +8,48 @@ import React, {
 import Lottie from "lottie-web";
 import AnimatedData from "../assets/lottie/loading.json";
 
-export const LoadingContext = createContext(null);
+interface MyContextValue {
+  Loading?: boolean;
+  setLoading?: (e: any) => void;
+}
 
-export const LoadingContextProvider = ({ children }: any) => {
-  const [Loading, setLoading] = useState<boolean>(false);
+export const LoadingContext = createContext<MyContextValue | undefined>(
+  undefined
+);
 
+const LoadingComponent = ({ Loading }: { Loading: boolean }) => {
   useEffect(() => {
     const instance = Lottie.loadAnimation({
-      container: document.querySelector("#loading"), // the dom element
+      container: document.getElementById("loading"), // the dom element
       renderer: "svg",
       loop: true,
       autoplay: true,
       animationData: AnimatedData,
     });
-
     return () => instance.destroy();
   }, [Loading]);
-
-  const contextValue = useMemo(
-    () => ({
-      Loading,
-      setLoading,
-    }),
-    [Loading]
+  return (
+    <div className="fixed h-screen w-screen bg-loading z-50 flex items-center justify-center">
+      <div id="loading" className="w-1/2 h-1/2" />
+    </div>
   );
+};
+
+export const LoadingContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [Loading, setLoading] = useState(false);
+
+  const contextValue: MyContextValue = {
+    Loading,
+    setLoading,
+  };
 
   return (
     <LoadingContext.Provider value={contextValue}>
-      {Loading && (
-        <div className="fixed h-screen w-screen bg-loading z-50 flex items-center justify-center">
-          <div id="loading" className="w-1/2 h-1/2" />
-        </div>
-      )}
+      {Loading && <LoadingComponent Loading={Loading} />}
       {children}
     </LoadingContext.Provider>
   );
