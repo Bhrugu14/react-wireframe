@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-export const ToastMsg = (msg, status) => {
+export const ToastMsg = (msg: string, status?: string) => {
   if (status === "warn") {
     toast.warn(msg, {
       position: "top-right",

@@ -1,4 +1,4 @@
-export function setWithExpiry(key, value) {
+export function setWithExpiry(key: string, value: any) {
   const now = new Date();
 
   // `item` is an object which contains the original value
@@ -10,7 +10,7 @@ export function setWithExpiry(key, value) {
   localStorage.setItem(key, JSON.stringify(item));
 }
 
-export function getWithExpiry(key) {
+export function getWithExpiry(key: string) {
   const itemStr = localStorage.getItem(key);
 
   // if the item doesn't exist, return null
@@ -31,6 +31,6 @@ export function getWithExpiry(key) {
   return item.value;
 }
 
-export function deleteStorage(key) {
+export function deleteStorage(key: string) {
   localStorage.removeItem(key);
 }
